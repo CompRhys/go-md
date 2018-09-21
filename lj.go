@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/quells/LennardJonesGo/sim"
+	"github.com/comprhys/moldyn/sim"
 )
 
 // Globals holds global simulation constants
