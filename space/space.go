@@ -28,7 +28,7 @@ func PutInBox(r r3.Vector, L float64) r3.Vector {
 
 // Displacement calculates the smallest vector pointing from a to b in a cell with periodic boundary conditions.
 func Displacement(a, b r3.Vector, L float64) r3.Vector {
-    r := a.Sub(b)
+    r := b.Sub(a)
     return PutInBox(r, L)
 }
 

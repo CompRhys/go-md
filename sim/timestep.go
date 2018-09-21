@@ -3,7 +3,7 @@ package sim
 import (
 	"github.com/golang/geo/r3"
 	"github.com/comprhys/moldyn/space"
-	"github.com/comprhys/moldyn/verlet"
+	"github.com/comprhys/moldyn/integrators"
 )
 
 // TimeStep evolves the system by one unit of time using the Velocity Verlet algorithm for molecular dynamics.
