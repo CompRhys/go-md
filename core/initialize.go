@@ -2,9 +2,9 @@
 package core
 
 import (
-	"github.com/golang/geo/r3"
 	"math"
 	"math/rand"
+	"github.com/golang/geo/r3"
 )
 
 // InitPositionCubic initializes particle positions in a simple cubic configuration.

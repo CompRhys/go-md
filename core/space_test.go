@@ -1,4 +1,4 @@
-package space
+package core
 
 import (
 	"math"

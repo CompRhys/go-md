@@ -1,8 +1,8 @@
 package analysis
 
 import (
-	"github.com/comprhys/moldyn/space"
 	"github.com/golang/geo/r3"
+	"github.com/comprhys/moldyn/core"
 )
 
 // PairwiseLennardJonesPotential calculates the Lennard Jones potential between two positions.

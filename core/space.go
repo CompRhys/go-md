@@ -1,5 +1,5 @@
 // Package space implements utilities to do vector math with periodic boundary conditions.
-package space
+package core
 
 import "github.com/golang/geo/r3"
 

@@ -2,7 +2,6 @@ package core
 
 import (
 	"github.com/golang/geo/r3"
-	"github.com/comprhys/moldyn/space"
 	"github.com/comprhys/moldyn/integrators"
 )
 
@@ -15,7 +14,7 @@ func TimeStep(R, V []r3.Vector, L, M, h float64) ([]r3.Vector, []r3.Vector) {
 	for i := 0; i < N; i++ {
 		Fi := InternalForce(i, R, L)
 		A[i] = Fi.Mul(1.0/M)
-		nR[i] = space.PutInBox(verlet.NextR(R[i], V[i], A[i], h), L)
+		nR[i] = PutInBox(verlet.NextR(R[i], V[i], A[i], h), L)
 	}
 	for i := 0; i < N; i++ {
 		nFi := InternalForce(i, nR, L)
@@ -38,7 +37,7 @@ func TimeStepParallel(R, V []r3.Vector, L, M, h float64) ([]r3.Vector, []r3.Vect
 		i := info.i
 		Fi := info.F
 		A[i] = Fi.Mul(1.0/M)
-		nR[i] = space.PutInBox(verlet.NextR(R[i], V[i], A[i], h), L)
+		nR[i] = PutInBox(verlet.NextR(R[i], V[i], A[i], h), L)
 	}
 	for i := 0; i < N; i++ { go InternalForceParallel(i, nR, L, c) }
 	for n := 0; n < N; n++ {

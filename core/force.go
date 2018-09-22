@@ -3,7 +3,6 @@ package core
 import (
 	"fmt"
 	"github.com/golang/geo/r3"
-	"github.com/comprhys/moldyn/space"
 )
 
 // PairwiseLennardJonesForce calculates the force vector on particle Ri due to Rj using the Lennard Jones potential.
@@ -11,7 +10,7 @@ func PairwiseLennardJonesForce(Ri, Rj r3.Vector, L float64) r3.Vector {
 	if Ri == Rj {
 		panic(fmt.Sprintf("%v and %v are equal, the pairwise force is infinite", Ri, Rj))
 	}
-	r := space.Displacement(Ri, Rj, L)
+	r := Displacement(Ri, Rj, L)
 	R2 := r.Norm2()
 	iR2 := 1.0 / R2
 	iR8 := iR2 * iR2 * iR2 * iR2
