@@ -13,8 +13,6 @@ func PairwiseLennardJonesPotential(Ri, Rj r3.Vector, L float64) float64 {
 	iR6 := iR2 * iR2 * iR2
 	iR12 := iR6 * iR6
 	return 4 * (iR12 - iR6)
-	// r := space.Distance(Ri, Rj, L)
-	// return 4 * (math.Pow(r, -12) - math.Pow(r, -6))
 }
 
 // KineticEnergy calculates the kinetic energy of a particle.
