@@ -4,14 +4,18 @@ package main
 import (
 	"fmt"
 	"time"
-
-	"github.com/comprhys/moldyn/sim"
+	"runtime"
+	"github.com/comprhys/moldyn/core"
 )
 
 // Globals holds global simulation constants
 type Globals struct {
 	N           int
 	L, M, T0, h float64
+}
+
+func init() {
+	runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
 func main() {
@@ -21,14 +25,15 @@ func main() {
 		h: 0.01,
 	}
 
-	Rs := sim.InitPositionFCC(g.N, g.L)
-	Vs := sim.InitVelocity(g.N, g.T0, g.M)
+	Rs := core.InitPositionFCC(g.N, g.L)
+	Vs := core.InitVelocity(g.N, g.T0, g.M)
 
 	T := 10
 	start := time.Now()
 	for t := 1; t <= T; t++ {
-		Rs, Vs = sim.TimeStepParallel(Rs, Vs, g.L, g.M, g.h)
+		Rs, Vs = core.TimeStepParallel(Rs, Vs, g.L, g.M, g.h)
 	}
 	elapsed := time.Since(start)
 	fmt.Printf("%v for %d time steps\n", elapsed, T)
 }
+

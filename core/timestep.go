@@ -1,4 +1,4 @@
-package sim
+package core
 
 import (
 	"github.com/golang/geo/r3"

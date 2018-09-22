@@ -1,4 +1,4 @@
-package sim
+package analysis
 
 import (
 	"github.com/comprhys/moldyn/space"

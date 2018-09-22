@@ -1,5 +1,5 @@
 // Package sim implements molecular dynamics simulation. The current implementation uses a Lennard Jones potential, but is generalizable to other potentials.
-package sim
+package core
 
 import (
 	"github.com/golang/geo/r3"

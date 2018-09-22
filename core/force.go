@@ -1,10 +1,9 @@
-package sim
+package core
 
 import (
 	"fmt"
-
-	"github.com/comprhys/moldyn/space"
 	"github.com/golang/geo/r3"
+	"github.com/comprhys/moldyn/space"
 )
 
 // PairwiseLennardJonesForce calculates the force vector on particle Ri due to Rj using the Lennard Jones potential.
