@@ -14,12 +14,12 @@ func TimeStep(R, V []r3.Vector, L, M, h float64) ([]r3.Vector, []r3.Vector) {
 	for i := 0; i < N; i++ {
 		Fi := InternalForce(i, R, L)
 		A[i] = Fi.Mul(1.0/M)
-		nR[i] = PutInBox(verlet.NextR(R[i], V[i], A[i], h), L)
+		nR[i] = PutInBox(integrators.NextR(R[i], V[i], A[i], h), L)
 	}
 	for i := 0; i < N; i++ {
 		nFi := InternalForce(i, nR, L)
 		nAi := nFi.Mul(1.0/M)
-		nV[i] = verlet.NextV(V[i], A[i], nAi, h)
+		nV[i] = integrators.NextV(V[i], A[i], nAi, h)
 	}
 	return nR, nV
 }
@@ -37,7 +37,7 @@ func TimeStepParallel(R, V []r3.Vector, L, M, h float64) ([]r3.Vector, []r3.Vect
 		i := info.i
 		Fi := info.F
 		A[i] = Fi.Mul(1.0/M)
-		nR[i] = PutInBox(verlet.NextR(R[i], V[i], A[i], h), L)
+		nR[i] = PutInBox(integrators.NextR(R[i], V[i], A[i], h), L)
 	}
 	for i := 0; i < N; i++ { go InternalForceParallel(i, nR, L, c) }
 	for n := 0; n < N; n++ {
@@ -45,7 +45,7 @@ func TimeStepParallel(R, V []r3.Vector, L, M, h float64) ([]r3.Vector, []r3.Vect
 		i := info.i
 		nFi := info.F
 		nAi := nFi.Mul(1.0/M)
-		nV[i] = verlet.NextV(V[i], A[i], nAi, h)
+		nV[i] = integrators.NextV(V[i], A[i], nAi, h)
 	}
 	return nR, nV
 }
