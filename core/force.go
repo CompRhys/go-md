@@ -5,6 +5,12 @@ import (
 	"github.com/golang/geo/r3"
 )
 
+// ForceReturn holds the index and force on a particle
+type ForceReturn struct {
+	i int
+	F r3.Vector
+}
+
 // PairwiseLennardJonesForce calculates the force vector on particle Ri due to Rj using the Lennard Jones potential.
 func PairwiseLennardJonesForce(Ri, Rj r3.Vector, L float64) r3.Vector {
 	if Ri == Rj {
@@ -20,24 +26,7 @@ func PairwiseLennardJonesForce(Ri, Rj r3.Vector, L float64) r3.Vector {
 }
 
 // InternalForce calculates the total force vector on particle Ri due to the other particles in R due to a pairwise force.
-func InternalForce(i int, R []r3.Vector, L float64) r3.Vector {
-	F := r3.Vector{0, 0, 0}
-	for j := range R {
-		if i != j {
-			F = F.Add(PairwiseLennardJonesForce(R[i], R[j], L))
-		}
-	}
-	return F
-}
-
-// ForceReturn holds the index and force on a particle
-type ForceReturn struct {
-	i int
-	F r3.Vector
-}
-
-// InternalForceParallel does the same as InternalForce but with channels
-func InternalForceParallel(i int, R []r3.Vector, L float64, c chan ForceReturn) {
+func InternalForce(i int, R []r3.Vector, L float64, c chan ForceReturn) {
 	F := r3.Vector{0, 0, 0}
 	for j := range R {
 		if i != j {
