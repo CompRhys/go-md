@@ -5,27 +5,9 @@ import (
 	"github.com/comprhys/moldyn/integrators"
 )
 
-// TimeStep evolves the system by one unit of time using the Velocity Verlet algorithm for molecular dynamics.
+// TimeStep evolves the system by one unit of time using the Velocity Verlet algorithm
+// for molecular dynamics using channels to provide simple parallelisarion.
 func TimeStep(R, V []r3.Vector, L, M, h float64) ([]r3.Vector, []r3.Vector) {
-	N := len(R)
-	A := make([]r3.Vector, N)
-	nR := make([]r3.Vector, N)
-	nV := make([]r3.Vector, N)
-	for i := 0; i < N; i++ {
-		Fi := InternalForce(i, R, L)
-		A[i] = Fi.Mul(1.0/M)
-		nR[i] = PutInBox(integrators.NextR(R[i], V[i], A[i], h), L)
-	}
-	for i := 0; i < N; i++ {
-		nFi := InternalForce(i, nR, L)
-		nAi := nFi.Mul(1.0/M)
-		nV[i] = integrators.NextV(V[i], A[i], nAi, h)
-	}
-	return nR, nV
-}
-
-// TimeStepParallel does the same as TimeStep but with channels
-func TimeStepParallel(R, V []r3.Vector, L, M, h float64) ([]r3.Vector, []r3.Vector) {
 	N := len(R)
 	A := make([]r3.Vector, N)
 	nR := make([]r3.Vector, N)
