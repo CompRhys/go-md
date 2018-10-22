@@ -31,7 +31,7 @@ func main() {
 	T := 10
 	start := time.Now()
 	for t := 1; t <= T; t++ {
-		Rs, Vs = core.TimeStepParallel(Rs, Vs, g.L, g.M, g.h)
+		Rs, Vs = core.TimeStep(Rs, Vs, g.L, g.M, g.h)
 	}
 	elapsed := time.Since(start)
 	fmt.Printf("%v for %d time steps\n", elapsed, T)
