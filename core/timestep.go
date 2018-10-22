@@ -13,7 +13,7 @@ func TimeStep(R, V []r3.Vector, L, M, h float64) ([]r3.Vector, []r3.Vector) {
 	nR := make([]r3.Vector, N)
 	nV := make([]r3.Vector, N)
 	c := make(chan ForceReturn, N)
-	for i := 0; i < N; i++ { go InternalForceParallel(i, R, L, c) }
+	for i := 0; i < N; i++ { go InternalForce(i, R, L, c) }
 	for n := 0; n < N; n++ {
 		info := <-c
 		i := info.i
@@ -21,7 +21,7 @@ func TimeStep(R, V []r3.Vector, L, M, h float64) ([]r3.Vector, []r3.Vector) {
 		A[i] = Fi.Mul(1.0/M)
 		nR[i] = PutInBox(integrators.NextR(R[i], V[i], A[i], h), L)
 	}
-	for i := 0; i < N; i++ { go InternalForceParallel(i, nR, L, c) }
+	for i := 0; i < N; i++ { go InternalForce(i, nR, L, c) }
 	for n := 0; n < N; n++ {
 		info := <-c
 		i := info.i
