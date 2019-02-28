@@ -56,6 +56,7 @@ func WarmUpStep(R, V []r3.Vector, L, M, F_max, h float64) ([]r3.Vector, []r3.Vec
 		info := <-c
 		i := info.i
 		nFi := info.F
+		nF_mag := nFi.norm 
 		if nF_mag > F_max {
 			nFi.Mul(F_max/nF_mag)
 		}
