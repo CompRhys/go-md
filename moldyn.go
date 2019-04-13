@@ -35,14 +35,24 @@ func main() {
 	Rs := core.InitPositionCubic(g.N, L)
 	Vs := core.InitVelocity(g.N, g.T0, g.M)
 
-	T := 10
+	dr := L/40
+	H, bins := analysis.PrepareHistogram(L/2, L, dr)
+	r_max := L/40 * float64(bins) 
+
+	T := 1000
 	start := time.Now()
 	for t := 1; t <= T; t++ {
 		// Rs, Vs = verlet.TimeStep(Rs, Vs, L, g.M, g.dt)
 		Rs, Vs = langevin.TimeStep(Rs, Vs, L, g.M, g.T0, g.gamma, g.dt)
+		analysis.UpdateHistogram(Rs, r_max, L, dr, H)
 		fmt.Printf("%v \n", analysis.Temperature(Vs, g.M, g.N))
+
+
 	}
 	elapsed := time.Since(start)
 	fmt.Printf("%v for %d time steps\n", elapsed, T)
+
+	rdf, rad := analysis.NormaliseHistogram(dr, g.rho, bins, g.N, H)
+	analysis.PlotHistogram(rad, rdf, bins)
 }
 
