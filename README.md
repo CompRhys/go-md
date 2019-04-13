@@ -13,8 +13,8 @@ The idea is that where possible we will use channels to allow concurrent process
 * [x] energy analysis 
 * [x] radial distribution function
 * [x] plotting functions
+* [x] langevin (first order)
 * [ ] cell lists: https://wwwee.ee.bgu.ac.il/~specmeth/EMT04/pdf/session_2/2_14_04.pdf 
-* [ ] langevin: http://www2.mpip-mainz.mpg.de/~andrienk/journal_club/integrators.pdf
 * [ ] structure factor
 * [ ] chemical potential (via widom insertion) 
 * [ ] cavity function (via henderson's method)
