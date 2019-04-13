@@ -5,13 +5,17 @@ import (
 	"fmt"
 	"time"
 	"runtime"
+	"math"
 	"github.com/comprhys/moldyn/core"
+	"github.com/comprhys/moldyn/analysis"
+	// "github.com/comprhys/moldyn/integrators/verlet"
+	"github.com/comprhys/moldyn/integrators/langevin"
 )
 
 // Globals holds global simulation constants
 type Globals struct {
-	N           int
-	L, M, T0, h float64
+	N           		int
+	rho, M, T0, gamma, dt float64
 }
 
 func init() {
@@ -20,18 +24,23 @@ func init() {
 
 func main() {
 	g := Globals{
-		N: 2048, L: 12.6992084,
-		T0: 0.2, M: 48.0,
-		h: 0.01,
+		N: 512, rho: 0.8,
+		T0: 1., M: 1.0,
+		gamma: 10., dt: 0.01,
 	}
 
-	Rs := core.InitPositionFCC(g.N, g.L)
+	V := float64(g.N) / g.rho
+	L := math.Cbrt(V)
+
+	Rs := core.InitPositionCubic(g.N, L)
 	Vs := core.InitVelocity(g.N, g.T0, g.M)
 
 	T := 10
 	start := time.Now()
 	for t := 1; t <= T; t++ {
-		Rs, Vs = core.TimeStep(Rs, Vs, g.L, g.M, g.h)
+		// Rs, Vs = verlet.TimeStep(Rs, Vs, L, g.M, g.dt)
+		Rs, Vs = langevin.TimeStep(Rs, Vs, L, g.M, g.T0, g.gamma, g.dt)
+		fmt.Printf("%v \n", analysis.Temperature(Vs, g.M, g.N))
 	}
 	elapsed := time.Since(start)
 	fmt.Printf("%v for %d time steps\n", elapsed, T)

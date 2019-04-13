@@ -7,7 +7,7 @@ import (
 
 // ForceReturn holds the index and force on a particle
 type ForceReturn struct {
-	i int
+	Index int
 	F r3.Vector
 }
 
@@ -33,5 +33,6 @@ func InternalForce(i int, R []r3.Vector, L float64, c chan ForceReturn) {
 			F = F.Add(PairwiseLennardJonesForce(R[i], R[j], L))
 		}
 	}
+	// return F
 	c <- ForceReturn{i, F}
 }

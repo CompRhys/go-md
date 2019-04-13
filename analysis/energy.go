@@ -7,7 +7,7 @@ import (
 
 // PairwiseLennardJonesPotential calculates the Lennard Jones potential between two positions.
 func PairwiseLennardJonesPotential(Ri, Rj r3.Vector, L float64) float64 {
-	r := space.Displacement(Ri, Rj, L)
+	r := core.Displacement(Ri, Rj, L)
 	R2 := r.Norm2()
 	iR2 := 1.0 / R2
 	iR6 := iR2 * iR2 * iR2
