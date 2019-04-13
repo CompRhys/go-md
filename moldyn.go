@@ -6,6 +6,7 @@ import (
 	"time"
 	"runtime"
 	"math"
+	"math/rand"
 	"github.com/comprhys/moldyn/core"
 	"github.com/comprhys/moldyn/analysis"
 	"github.com/comprhys/moldyn/plot"
@@ -17,18 +18,24 @@ import (
 type Globals struct {
 	N           		int
 	rho, M, T0, gamma, dt float64
+	verlet bool
 }
 
 func init() {
+	rand.Seed(time.Now().UTC().UnixNano())
 	runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
 func main() {
 	g := Globals{
-		N: 512, rho: 0.8,
+		N: 8*8*8, rho: 0.8,
 		T0: 1., M: 1.0,
-		gamma: .5, dt: 0.01,
+		gamma: 1., dt: 0.01,
+		verlet: true,
 	}
+
+
+	// current need N = M**3 
 
 	V := float64(g.N) / g.rho
 	L := math.Cbrt(V)
@@ -38,15 +45,23 @@ func main() {
 
 	dr := L/120
 	H, bins := analysis.PrepareHistogram(L/2, L, dr)
-	r_max := dr * float64(bins) 
+	r_max := dr * float64(bins)
+	
+	thermostat := langevin.PrepareThermostat(g.gamma, g.M, g.dt, g.T0, g.verlet)
+
+	// Warm up
+	for t := 0; t <= 100; t++ {
+		// Rs, Vs = verlet.TimeStep(Rs, Vs, L, g.M, g.dt)
+		Rs, Vs = langevin.TimeStep(Rs, Vs, L, g.M, g.dt, thermostat)
+	}
 
 	T := 1000
 	var temps []float64
 	start := time.Now()
 	for t := 0; t <= T; t++ {
 		// Rs, Vs = verlet.TimeStep(Rs, Vs, L, g.M, g.dt)
-		Rs, Vs = langevin.TimeStep(Rs, Vs, L, g.M, g.T0, g.gamma, g.dt)
-		if t % 10 == 0 {
+		Rs, Vs = langevin.TimeStep(Rs, Vs, L, g.M, g.dt, thermostat)
+		if t % 20 == 0 {
 			analysis.UpdateHistogram(Rs, r_max, L, dr, H)
 			temps = append(temps, analysis.Temperature(Vs, g.M, g.N))
 		}

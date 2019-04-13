@@ -47,7 +47,7 @@ func NormaliseHistogram(dr, rho float64, bins, N int, H []float64) (rdf, rad []f
         r:=dr*(j+0.5);
         vol_bin:=((j+1)*(j+1)*(j+1)-j*j*j)*dr*dr*dr;
         nid:=(4./3.)*math.Pi*vol_bin*rho;
-        rdf[i] = H[i]/(N_f*nid)
+        rdf[i] = H[i]/N_f/nid
 		rad[i] = r
 		j += 1.
 	}

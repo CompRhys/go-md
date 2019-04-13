@@ -14,7 +14,7 @@ func PlotTemperature(Temps []float64, dt float64) {
 		panic(err)
 	}
 
-	p.Title.Text = "Radial Distribution Function"
+	p.Title.Text = "Temperature"
 	p.X.Label.Text = "t"
 	p.Y.Label.Text = "T"
 
