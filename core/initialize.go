@@ -71,7 +71,6 @@ func InitPositionFCC(N int, L float64) []r3.Vector {
 // Ensures that the net momentum of the system is zero and scales the average kinetic energy to match a given temperature.
 func InitVelocity(N int, T0 float64, M float64) []r3.Vector {
 	V := make([]r3.Vector, N)
-	rand.Seed(1)
 	netP := r3.Vector{0, 0, 0}
 	netE := 0.0
 	for n := 0; n < N; n++ {
