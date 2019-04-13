@@ -2,7 +2,7 @@
 
 This is a simple molecular dynamics package built in go.
 
-The idea is that where possible we will use channels to allow concurrent processing allowing for a ~30% speedup without needing to deal with MPI. This will enable the package to take advantage on modern multicore machines.
+The idea is that where possible we will use channels to allow concurrent processing allowing for a ~30% speedup without needing to deal with MPI. This will enable the package to take advantage of modern multicore machines.
 
 ### TODO:
 * [ ] implement https://wwwee.ee.bgu.ac.il/~specmeth/EMT04/pdf/session_2/2_14_04.pdf to speed up evaluations.
