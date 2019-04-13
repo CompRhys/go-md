@@ -8,6 +8,7 @@ import (
 	"math"
 	"github.com/comprhys/moldyn/core"
 	"github.com/comprhys/moldyn/analysis"
+	"github.com/comprhys/moldyn/plot"
 	// "github.com/comprhys/moldyn/integrators/verlet"
 	"github.com/comprhys/moldyn/integrators/langevin"
 )
@@ -26,7 +27,7 @@ func main() {
 	g := Globals{
 		N: 512, rho: 0.8,
 		T0: 1., M: 1.0,
-		gamma: 10., dt: 0.01,
+		gamma: .5, dt: 0.01,
 	}
 
 	V := float64(g.N) / g.rho
@@ -35,24 +36,27 @@ func main() {
 	Rs := core.InitPositionCubic(g.N, L)
 	Vs := core.InitVelocity(g.N, g.T0, g.M)
 
-	dr := L/40
+	dr := L/120
 	H, bins := analysis.PrepareHistogram(L/2, L, dr)
-	r_max := L/40 * float64(bins) 
+	r_max := dr * float64(bins) 
 
 	T := 1000
+	var temps []float64
 	start := time.Now()
-	for t := 1; t <= T; t++ {
+	for t := 0; t <= T; t++ {
 		// Rs, Vs = verlet.TimeStep(Rs, Vs, L, g.M, g.dt)
 		Rs, Vs = langevin.TimeStep(Rs, Vs, L, g.M, g.T0, g.gamma, g.dt)
-		analysis.UpdateHistogram(Rs, r_max, L, dr, H)
-		fmt.Printf("%v \n", analysis.Temperature(Vs, g.M, g.N))
-
+		if t % 10 == 0 {
+			analysis.UpdateHistogram(Rs, r_max, L, dr, H)
+			temps = append(temps, analysis.Temperature(Vs, g.M, g.N))
+		}
 
 	}
 	elapsed := time.Since(start)
 	fmt.Printf("%v for %d time steps\n", elapsed, T)
 
 	rdf, rad := analysis.NormaliseHistogram(dr, g.rho, bins, g.N, H)
-	analysis.PlotHistogram(rad, rdf, bins)
+	plot.PlotHistogram(rad, rdf)
+	plot.PlotTemperature(temps, g.dt)
 }
 
