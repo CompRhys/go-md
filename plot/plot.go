@@ -14,7 +14,7 @@ func PlotTemperature(Temps []float64, dt float64) {
 		panic(err)
 	}
 
-	p.Title.Text = "Temperature"
+	p.Title.Text = "Kinetic Temperature"
 	p.X.Label.Text = "t"
 	p.Y.Label.Text = "T"
 
@@ -27,7 +27,7 @@ func PlotTemperature(Temps []float64, dt float64) {
 	}
 
 	err = plotutil.AddLinePoints(p,
-		"rdf", pts)
+		"Kinetic", pts)
 	if err != nil {
 		panic(err)
 	}
