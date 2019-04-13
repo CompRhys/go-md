@@ -6,6 +6,7 @@ import (
 	"time"
 	"runtime"
 	"math"
+	"math/rand"
 	"github.com/comprhys/moldyn/core"
 	"github.com/comprhys/moldyn/analysis"
 	"github.com/comprhys/moldyn/plot"
@@ -20,6 +21,7 @@ type Globals struct {
 }
 
 func init() {
+	rand.Seed(rand.Seed(time.Now().UTC().UnixNano())
 	runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
