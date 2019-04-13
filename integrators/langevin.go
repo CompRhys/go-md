@@ -1,5 +1,5 @@
 // Package verlet implements velocity verlet for stepwise Newtonian mechanics.
-package langevin
+package integrators
 
 import (
 	// "fmt"
@@ -22,7 +22,7 @@ type Thermostat struct {
 	verlet bool
 }
 
-func PrepareThermostat(gamma, M, h, T0 float64, verlet bool) (Thermostat) {
+func PrepareLangevin(gamma, M, h, T0 float64, verlet bool) (Thermostat) {
 	d := h/2./M
 	q := gamma*h/2
 	sigma := math.Sqrt(h*T0*gamma/M)
@@ -31,7 +31,7 @@ func PrepareThermostat(gamma, M, h, T0 float64, verlet bool) (Thermostat) {
 
 
 // Implementation of first order langevin dynamics
-func TimeStep(R, V []r3.Vector, L, M, dt float64, therm Thermostat) ([]r3.Vector, []r3.Vector) {
+func LangevinStep(R, V []r3.Vector, L, M, dt float64, therm Thermostat) ([]r3.Vector, []r3.Vector) {
 	N := len(R)
 	nR := make([]r3.Vector, N)
 	Fi := make([]r3.Vector, N)

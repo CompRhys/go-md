@@ -10,8 +10,7 @@ import (
 	"github.com/comprhys/moldyn/core"
 	"github.com/comprhys/moldyn/analysis"
 	"github.com/comprhys/moldyn/plot"
-	// "github.com/comprhys/moldyn/integrators/verlet"
-	"github.com/comprhys/moldyn/integrators/langevin"
+	"github.com/comprhys/moldyn/integrators"
 )
 
 // Globals holds global simulation constants
@@ -47,12 +46,12 @@ func main() {
 	H, bins := analysis.PrepareHistogram(L/2, L, dr)
 	r_max := dr * float64(bins)
 	
-	thermostat := langevin.PrepareThermostat(g.gamma, g.M, g.dt, g.T0, g.verlet)
+	thermostat := integrators.PrepareLangevin(g.gamma, g.M, g.dt, g.T0, g.verlet)
 
 	// Warm up
 	for t := 0; t <= 100; t++ {
 		// Rs, Vs = verlet.TimeStep(Rs, Vs, L, g.M, g.dt)
-		Rs, Vs = langevin.TimeStep(Rs, Vs, L, g.M, g.dt, thermostat)
+		Rs, Vs = integrators.LangevinStep(Rs, Vs, L, g.M, g.dt, thermostat)
 	}
 
 	T := 1000
@@ -60,7 +59,7 @@ func main() {
 	start := time.Now()
 	for t := 0; t <= T; t++ {
 		// Rs, Vs = verlet.TimeStep(Rs, Vs, L, g.M, g.dt)
-		Rs, Vs = langevin.TimeStep(Rs, Vs, L, g.M, g.dt, thermostat)
+		Rs, Vs = integrators.LangevinStep(Rs, Vs, L, g.M, g.dt, thermostat)
 		if t % 20 == 0 {
 			analysis.UpdateHistogram(Rs, r_max, L, dr, H)
 			temps = append(temps, analysis.Temperature(Vs, g.M, g.N))
