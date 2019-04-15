@@ -2,10 +2,8 @@
 
 This is a simple molecular dynamics package built in go. The motivation behind this package was to learn golang and make use of it's ability for minimal fuss parallelisation. The idea is that where possible we will use channels to allow concurrent processing allowing for a ~30% speedup without needing to deal with MPI. This will enable the package to take advantage of modern multicore machines.
 
-\
-\
-\
-\
+<br/><br/>
+<br/><br/>
 
 <p align="center">
   <img src="points.png">
