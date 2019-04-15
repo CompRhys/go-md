@@ -18,6 +18,7 @@ This is a simple molecular dynamics package built in go. The motivation behind t
 ### TODO:
 * [x] energy analysis 
 * [x] radial distribution function
+* [ ] normalise radial distribution function
 * [x] plotting functions
 * [x] langevin (first order)
 * [ ] cell lists: https://wwwee.ee.bgu.ac.il/~specmeth/EMT04/pdf/session_2/2_14_04.pdf 
