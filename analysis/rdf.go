@@ -36,18 +36,20 @@ func UpdateHistogram(R []r3.Vector, r_max, L, dr float64, H []float64) {
     }
 }
 
-func NormaliseHistogram(dr, rho float64, bins, N int, H []float64) (rdf, rad []float64) {
+func NormaliseHistogram(dr, rho float64, bins, N, T, sample int, H []float64) (rdf, rad []float64) {
     rdf = make([]float64, bins)
     rad = make([]float64, bins)
 	
 	N_f := float64(N)
+	T_f := float64(T % sample)
+
 	j := 0.
     for i:=0 ; i<bins; i++ {
 		
-        r:=dr*(j+0.5);
-        vol_bin:=((j+1)*(j+1)*(j+1)-j*j*j)*dr*dr*dr;
-        nid:=(4./3.)*math.Pi*vol_bin*rho;
-        rdf[i] = H[i]/N_f/nid
+        r:=dr*(j+0.5)
+        vol_bin:=((j+1)*(j+1)*(j+1)-j*j*j)*dr*dr*dr
+        nid:=(4./3.)*math.Pi*vol_bin*rho
+        rdf[i] = H[i]/nid/N_f/T_f
 		rad[i] = r
 		j += 1.
 	}

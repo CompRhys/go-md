@@ -55,12 +55,13 @@ func main() {
 	}
 
 	T := 1000
+	sample := 20
 	var temps []float64
 	start := time.Now()
 	for t := 0; t <= T; t++ {
 		// Rs, Vs = verlet.TimeStep(Rs, Vs, L, g.M, g.dt)
 		Rs, Vs = integrators.LangevinStep(Rs, Vs, L, g.M, g.dt, thermostat)
-		if t % 20 == 0 {
+		if t % sample == 0 {
 			analysis.UpdateHistogram(Rs, r_max, L, dr, H)
 			temps = append(temps, analysis.Temperature(Vs, g.M, g.N))
 		}
@@ -69,7 +70,8 @@ func main() {
 	elapsed := time.Since(start)
 	fmt.Printf("%v for %d time steps\n", elapsed, T)
 
-	rdf, rad := analysis.NormaliseHistogram(dr, g.rho, bins, g.N, H)
+
+	rdf, rad := analysis.NormaliseHistogram(dr, g.rho, bins, T, sample, g.N, H)
 	plot.PlotHistogram(rad, rdf)
 	plot.PlotTemperature(temps, g.dt)
 }

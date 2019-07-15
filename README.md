@@ -21,4 +21,5 @@ This is a simple molecular dynamics package built in go. The motivation behind t
 * [ ] structure factor
 * [ ] chemical potential (via widom insertion) 
 * [ ] cavity function (via henderson's method)
-* [ ] make it easy to add new forces
+* [ ] add new pair potentials
+* [ ] add three-body potentials
